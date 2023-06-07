@@ -6,7 +6,7 @@ namespace ofilin\GeoIP;
 use MaxMind\Db\Reader;
 use Yii;
 use yii\base\Component;
-use yii\web\Session;
+//use yii\web\Session;
 
 /**
  * Class GeoIP
@@ -30,7 +30,7 @@ class GeoIP extends Component {
     /**
      * @var Session
      */
-    private $session;
+    //private $session;
 
     /**
      * @inheritDoc
@@ -38,7 +38,7 @@ class GeoIP extends Component {
     public function init() {
         $db = $this->dbPath ?: Yii::getAlias('@vendor/ofilin/maxmind-geolite2-database/city.mmdb');
         
-        $this->session = Yii::$app->session;
+        //$this->session = Yii::$app->session;
         $this->reader = new Reader($db);
 
         parent::init();
@@ -53,17 +53,23 @@ class GeoIP extends Component {
             $ip = Yii::$app->request->getUserIP();
         }
 
-        if (!array_key_exists($ip, $this->result)) {
-            $key = self::className() . ':' . $ip;
+//         if (!array_key_exists($ip, $this->result)) {
+//             $key = self::className() . ':' . $ip;
 
-            if ($this->session->offsetExists($key)) {
-                $this->result[$ip] = $this->session->get($key);
-            } else {
-                $result = $this->reader->get($ip);
-                $this->result[$ip] = new Result($result);
-                $this->session->set($key, $this->result[$ip]);
-            }
-        }
+//             if ($this->session->offsetExists($key)) {
+//                 $this->result[$ip] = $this->session->get($key);
+//             } else {
+//                 $result = $this->reader->get($ip);
+//                 $this->result[$ip] = new Result($result);
+//                 $this->session->set($key, $this->result[$ip]);
+//             }
+//         }
+        $key = self::class . ':' . $ip;
+        $cache = Yii::$app->cache;
+        $this->result[$ip] = $cache->getOrSet($key, function () use ($ip) {
+            $result = $this->reader->get($ip);
+            return new Result($result);
+        }, 3600);
 
         return $this->result[$ip];
     }
