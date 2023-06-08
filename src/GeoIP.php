@@ -1,22 +1,27 @@
 <?php
 
-
 namespace ofilin\GeoIP;
 
-use MaxMind\Db\Reader;
 use Yii;
 use yii\base\Component;
-//use yii\web\Session;
+use MaxMind\Db\Reader;
+
 
 /**
  * Class GeoIP
  */
-class GeoIP extends Component {
+class GeoIP extends Component
+{
     /**
      * @var string
      */
-    public $dbPath;    
-    
+    public $dbPath;
+
+    /**
+     * @var string
+     */
+    public $lang = 'en';
+
     /**
      * @var Reader
      */
@@ -28,17 +33,12 @@ class GeoIP extends Component {
     private $result = [];
 
     /**
-     * @var Session
-     */
-    //private $session;
-
-    /**
      * @inheritDoc
      */
-    public function init() {
+    public function init()
+    {
         $db = $this->dbPath ?: Yii::getAlias('@vendor/ofilin/maxmind-geolite2-database/city.mmdb');
-        
-        //$this->session = Yii::$app->session;
+
         $this->reader = new Reader($db);
 
         parent::init();
@@ -48,27 +48,17 @@ class GeoIP extends Component {
      * @param string|null $ip
      * @return Result
      */
-    public function ip($ip = null) {
+    public function ip($ip = null)
+    {
         if ($ip === null) {
             $ip = Yii::$app->request->getUserIP();
         }
 
-//         if (!array_key_exists($ip, $this->result)) {
-//             $key = self::className() . ':' . $ip;
-
-//             if ($this->session->offsetExists($key)) {
-//                 $this->result[$ip] = $this->session->get($key);
-//             } else {
-//                 $result = $this->reader->get($ip);
-//                 $this->result[$ip] = new Result($result);
-//                 $this->session->set($key, $this->result[$ip]);
-//             }
-//         }
         $key = self::class . ':' . $ip;
         $cache = Yii::$app->cache;
         $this->result[$ip] = $cache->getOrSet($key, function () use ($ip) {
             $result = $this->reader->get($ip);
-            return new Result($result);
+            return new Result($result, $this->lang);
         }, 3600);
 
         return $this->result[$ip];
