@@ -2,6 +2,8 @@
 
 namespace ofilin\GeoIP;
 
+use Exception;
+
 /**
  * Class Result
  * @package ofilin\GeoIP
@@ -16,8 +18,12 @@ class Result extends ResultBase
     {
         $value = null;
 
-        if (isset($data['city']['names'][$this->lang])) {
+        try {
             $value = $data['city']['names'][$this->lang];
+        } catch (Exception $e) {
+            if (isset($data['city']['names']['en'])) {
+                $value = $data['city']['names']['en'];
+            }
         }
 
         return $value;
@@ -27,8 +33,12 @@ class Result extends ResultBase
     {
         $value = null;
 
-        if (isset($data['country']['names'][$this->lang])) {
+        try {
             $value = $data['country']['names'][$this->lang];
+        } catch (Exception $e) {
+            if (isset($data['country']['names']['en'])) {
+                $value = $data['country']['names']['en'];
+            }
         }
 
         return $value;
