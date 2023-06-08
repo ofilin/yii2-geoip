@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ofilin\GeoIP;
 
 /**
@@ -11,28 +10,32 @@ namespace ofilin\GeoIP;
  * @property string|null country
  * @property Location location
  */
-class Result extends ResultBase {
-    protected function getCity($data) {
+class Result extends ResultBase
+{
+    protected function getCity($data)
+    {
         $value = null;
 
-        if (isset($data['city']['names']['en'])) {
-            $value = $data['city']['names']['en'];
+        if (isset($data['city']['names'][$this->lang])) {
+            $value = $data['city']['names'][$this->lang];
         }
 
         return $value;
     }
 
-    protected function getCountry($data) {
+    protected function getCountry($data)
+    {
         $value = null;
 
-        if (isset($data['country']['names']['en'])) {
-            $value = $data['country']['names']['en'];
+        if (isset($data['country']['names'][$this->lang])) {
+            $value = $data['country']['names'][$this->lang];
         }
 
         return $value;
     }
 
-    protected function getLocation($data) {
+    protected function getLocation($data)
+    {
         $value = new Location();
 
         if (isset($data['location'])) {
@@ -44,7 +47,8 @@ class Result extends ResultBase {
         return $value;
     }
 
-    protected function getIsoCode($data) {
+    protected function getIsoCode($data)
+    {
         $value = null;
 
         if (isset($data['country']['iso_code'])) {
@@ -54,7 +58,8 @@ class Result extends ResultBase {
         return $value;
     }
 
-    public function isDetected() {
+    public function isDetected()
+    {
         return ($this->location->lat !== null && $this->location->lng !== null);
     }
 }
