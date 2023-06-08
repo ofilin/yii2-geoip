@@ -1,6 +1,8 @@
 Yii 2 GeoIP extension
 =====================
-[![Latest Stable Version](https://poser.pugx.org/ofilin/yii2-geoip/version)](https://packagist.org/packages/ofilin/yii2-geoip) [![Total Downloads](https://poser.pugx.org/ofilin/yii2-geoip/downloads)](https://packagist.org/packages/ofilin/yii2-geoip) [![Build Status](https://travis-ci.org/ofilin/yii2-geoip.svg?branch=1.0.1)](https://travis-ci.org/ofilin/yii2-geoip) [![HHVM Status](https://img.shields.io/hhvm/ofilin/yii2-geoip.svg)](http://hhvm.h4cc.de/package/ofilin/yii2-geoip) [![CodeClimate](https://codeclimate.com/github/ofilin/yii2-geoip.png)](https://codeclimate.com/github/ofilin/yii2-geoip) 
+[![Latest Stable Version](https://poser.pugx.org/ofilin/yii2-geoip/version)](https://packagist.org/packages/ofilin/yii2-geoip) 
+[![Total Downloads](https://poser.pugx.org/ofilin/yii2-geoip/downloads)](https://packagist.org/packages/ofilin/yii2-geoip) 
+[![Build Status](https://travis-ci.org/ofilin/yii2-geoip.svg?branch=1.0.1)](https://travis-ci.org/ofilin/yii2-geoip) 
 
 Provides information about geographical location of user by IP address.
 
@@ -91,7 +93,8 @@ $config = [
     'components' => [
         'geoip' => [
             'class' => 'ofilin\GeoIP\GeoIP',
-            'dbPath' => Yii::getAlias('@example/maxmind/database/city.mmdb')
+            'dbPath' => Yii::getAlias('@example/maxmind/database/city.mmdb'),
+            'lang' => 'ru', // Default en
         ],
     ]
     ...
