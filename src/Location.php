@@ -1,10 +1,9 @@
 <?php
 
-
 namespace ofilin\GeoIP;
 
-
-class Location {
+class Location
+{
 
     /**
      * @var float|null
@@ -16,7 +15,8 @@ class Location {
      */
     public $lng;
 
-    public function __construct($lat = null, $lng = null) {
+    public function __construct($lat = null, $lng = null)
+    {
         $this->lat = $lat;
         $this->lng = $lng;
     }
