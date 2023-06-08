@@ -1,27 +1,33 @@
 <?php
 
-
 namespace ofilin\GeoIP;
-
 
 use Exception;
 
-class ResultBase {
+class ResultBase
+{
     /**
      * @var array
      */
     protected $data;
+
+    public $lang = 'en';
 
     /**
      * @var array
      */
     protected $attributes = [];
 
-    public function __construct($data) {
+    public function __construct($data, $lang = null)
+    {
+        if (!empty($lang)) {
+            $this->lang = $lang;
+        }
         $this->data = $data;
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         $getter = 'get' . ucfirst($name);
 
         if (array_key_exists($name, $this->attributes)) {
@@ -35,7 +41,8 @@ class ResultBase {
         throw new Exception("Unknown property");
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->attributes[$name] = $value;
     }
 }
